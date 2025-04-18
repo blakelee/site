@@ -10,6 +10,7 @@ content:
       - name: layout
         label: Layout
         type: string
+        hidden: true
         default: post
       - name: published
         label: Published
