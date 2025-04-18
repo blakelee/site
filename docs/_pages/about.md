@@ -4,26 +4,10 @@ title: About
 permalink: /about/
 ---
 
-[Reverie](https://github.com/amitmerchant1990/reverie) is a Jekyll theme which is simple and opinionated. It's actually a fork of [jekyll-now](https://github.com/barryclark/jekyll-now) with some additional features and personal touches which I've implemented to suit my needs for [my blog](https://www.amitmerchant.com).
+I'm an Android Software Engineer with industry experience dating back to 2017. Over the years, I've had the opportunity to work at companies you might recognize — Redfin, Rover.com, and Square.
 
-This is a plug-and-play Jekyll theme which you can use on GitHub Pages without even setting up a local environment.
+After some time in the field, I realized I enjoy building apps my own way. So I took the leap and started my own business.
 
-## Features
+This blog documents the challenges and insights that come with developing a greenfield app from the ground up — especially using Kotlin Multiplatform and Compose Multiplatform. Since my app targets both Android and iOS, I’m learning how to architect something scalable while working with technologies that are still rapidly evolving.
 
-- Command-line free fork-first workflow, using GitHub.com to create, customize and post to your blog
-- Fully responsive and mobile optimized base theme
-- Sass/Coffeescript support using Jekyll 2.0
-- Free hosting on your GitHub Pages user site
-- All the SEO goodies comes in-built
-- Markdown blogging
-- Syntax highlighting using Pygments
-    - [Dracula syntax theme](https://draculatheme.com/) included
-- Disqus commenting
-- Google Analytics integration
-- Fuzzy search across blog posts
-- Pagination of posts works out-of-the-box.
-- Categorize posts out-of-the box
-- RSS Feed
-- In-built sitemap
-
-Learn more about it [here](https://github.com/amitmerchant1990/reverie) on how to get started.
+If you like what you're reading, feel free to leave a comment or find me on the [Kotlin Slack](https://kotlinlang.slack.com) workspace as well.
