@@ -1,9 +1,9 @@
-media: docs/media
+media: media
 content:
   - name: posts
     label: Posts
     type: collection
-    path: 'docs/_posts'
+    path: '_posts'
     view:
       fields: [ title, published, date ]
     fields:
