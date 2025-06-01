@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kotlin Multiplatform Gradle Tips – Blake Oliveira's Blog – Thoughts and stories of a developer</title>
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Kotlin Multiplatform Gradle Tips" />
+<meta name="author" content="Blake Oliveira" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Kotlin Multiplatform (KMP) allows developers to share code across multiple platforms—Android, iOS, JVM, and more—while maintaining platform-specific implementations. However, configuring KMP projects with the Gradle Plugin can be challenging due to its evolving nature. Compared to the mature Android Gradle Plugin (AGP), KMP’s new DSL, sparse documentation, and incubating status require a different approach. This guide explores common hurdles and provides practical solutions to streamline your KMP workflow, optimize builds, and ensure maintainability." />
+<meta property="og:description" content="Kotlin Multiplatform (KMP) allows developers to share code across multiple platforms—Android, iOS, JVM, and more—while maintaining platform-specific implementations. However, configuring KMP projects with the Gradle Plugin can be challenging due to its evolving nature. Compared to the mature Android Gradle Plugin (AGP), KMP’s new DSL, sparse documentation, and incubating status require a different approach. This guide explores common hurdles and provides practical solutions to streamline your KMP workflow, optimize builds, and ensure maintainability." />
+<link rel="canonical" href="http://localhost:4000/site/kotlin-multiplatform-gradle-tips/" />
+<meta property="og:url" content="http://localhost:4000/site/kotlin-multiplatform-gradle-tips/" />
+<meta property="og:site_name" content="Blake Oliveira’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-04-21T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Kotlin Multiplatform Gradle Tips" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Blake Oliveira"},"dateModified":"2025-04-21T00:00:00-07:00","datePublished":"2025-04-21T00:00:00-07:00","description":"Kotlin Multiplatform (KMP) allows developers to share code across multiple platforms—Android, iOS, JVM, and more—while maintaining platform-specific implementations. However, configuring KMP projects with the Gradle Plugin can be challenging due to its evolving nature. Compared to the mature Android Gradle Plugin (AGP), KMP’s new DSL, sparse documentation, and incubating status require a different approach. This guide explores common hurdles and provides practical solutions to streamline your KMP workflow, optimize builds, and ensure maintainability.","headline":"Kotlin Multiplatform Gradle Tips","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/site/kotlin-multiplatform-gradle-tips/"},"url":"http://localhost:4000/site/kotlin-multiplatform-gradle-tips/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+
+<meta property="og:description" content="Kotlin Multiplatform (KMP) allows developers to share code across multiple platforms—Android, iOS, JVM, and more—while maintaining platform-specific implementations. However, configuring KMP projects with the Gradle Plugin can be challenging due to its evolving nature. Compared to the mature Android Gradle Plugin (AGP), KMP’s new DSL, sparse documentation, and incubating status require a different approach. This guide explores common hurdles and provides practical solutions to streamline your KMP workflow, optimize builds, and ensure maintainability.
+
+" />
+
+<meta name="author" content="Blake Oliveira's Blog" />
+
+
+<meta property="og:title" content="Kotlin Multiplatform Gradle Tips" />
+<meta property="twitter:title" content="Kotlin Multiplatform Gradle Tips" />
+
+
+
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/9651986"/>
+<meta property="twitter:image" content="https://avatars.githubusercontent.com/u/9651986"/>
+
+
+
+    <link rel="stylesheet" type="text/css" href="/site/assets/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Blake Oliveira's Blog - Thoughts and stories of a developer" href="/site/feed.xml" />
+    <link rel="canonical" href="http://localhost:4000/kotlin-multiplatform-gradle-tips/" />
+
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="32x32" href="/site/images/favicon-32x32.png">
+    
+
+  </head>
+
+  <body>
+    <div id="bar"></div>
+    <div class="wrapper-container">
+      <div class="wrapper-masthead">
+        <div class="container">
+          <header class="masthead clearfix">
+            <a href="/site/" class="site-avatar"><img src="https://avatars.githubusercontent.com/u/9651986" alt="" /></a>
+
+            <div class="site-info">
+              <h1 class="site-name"><a href="/site/">Blake Oliveira's Blog</a></h1>
+              <p class="site-description">Thoughts and stories of a developer</p> 
+            </div>
+
+            <nav>
+              <a href="/site/">Home</a>
+              <a href="/site/search">Search</a>
+              <a href="/site/about">About</a>
+              <a href="/site/archive">Archive</a>
+            </nav>
+          </header>
+        </div>
+      </div>
+
+      <div class="wrapper-main">
+        <div id="main" role="main" class="container">
+          <article class="post detailed">
+  <h1>Kotlin Multiplatform Gradle Tips</h1>
+
+  <div>
+    <p class="author_title">Blake Oliveira  ·  April 21, 2025</p>
+    
+    <div class="post-tags">
+      
+      
+    </div>
+  </div>
+
+  <div class="entry">
+    <p>Kotlin Multiplatform (KMP) allows developers to share code across multiple platforms—Android, iOS, JVM, and more—while maintaining platform-specific implementations. However, configuring KMP projects with the Gradle Plugin can be challenging due to its evolving nature. Compared to the mature Android Gradle Plugin (AGP), KMP’s new DSL, sparse documentation, and incubating status require a different approach. This guide explores common hurdles and provides practical solutions to streamline your KMP workflow, optimize builds, and ensure maintainability.</p>
+
+<h2 id="challenge-1-configuring-javakotlin-versions-across-modules">Challenge 1: Configuring Java/Kotlin Versions Across Modules</h2>
+
+<p>One of the initial hurdles with KMP is setting consistent Java and Kotlin versions for each module. Unlike AGP, where this was a familiar requirement, KMP’s configuration can lead to errors like:</p>
+
+<blockquote>
+  <p>“Class has been compiled by a more recent version of the Java Environment (class file version x), this version of the Java Runtime only recognizes class file versions up to y.”</p>
+</blockquote>
+
+<p>This issue arises when the Java/Kotlin versions used to compile and run your code are misaligned. To simplify version management and avoid such errors, consider using the <a href="https://github.com/GradleUp/compat-patrouille">La Compat-Patrouille</a> library. This tool helps standardize compatibility settings across your KMP modules, reducing configuration headaches.</p>
+
+<h2 id="challenge-2-reducing-repetitive-gradle-code-in-multi-module-projects">Challenge 2: Reducing Repetitive Gradle Code in Multi-Module Projects</h2>
+
+<p>As your project grows with multiple modules, copying and pasting identical Gradle configurations becomes tedious and error-prone. A better approach is to create a convention plugin to centralize and reuse build logic. To maintain consistent dependency versions (aligned with your TOML files) and enable access to project dependencies within the build-logic folder, the <a href="https://github.com/Hinge/project-accessors">Project Accessors</a> library is invaluable. It simplifies dependency management and ensures uniformity across modules.</p>
+
+<h2 id="challenge-3-optimizing-build-performance-with-gradle-flags">Challenge 3: Optimizing Build Performance with Gradle Flags</h2>
+
+<p>To enhance the performance of your Gradle syncs and builds, you can enable several flags in your gradle.properties file. Here’s what each flag does:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ksp.incremental=true</code>: Enables incremental compilation for Kotlin Symbol Processing (KSP). This reduces build times by only reprocessing changed files, rather than the entire codebase.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">org.gradle.configuration-cache=true</code>: Activates Gradle’s configuration cache, which stores the results of the configuration phase. This speeds up subsequent builds by reusing cached configuration data, especially in large projects.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">org.gradle.caching=true</code>: Enables Gradle’s build cache, allowing tasks to reuse outputs from previous builds (local or remote). This is particularly effective for tasks like compilation or testing that produce identical outputs.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">org.gradle.parallel=true</code>: Allows Gradle to execute tasks across different modules in parallel, leveraging multi-core processors to reduce overall build time.</p>
+  </li>
+</ul>
+
+<p>Add these flags to your gradle.properties file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">ksp.incremental</span><span class="p">=</span><span class="s">true</span>
+<span class="py">org.gradle.configuration-cache</span><span class="p">=</span><span class="s">true</span>
+<span class="py">org.gradle.caching</span><span class="p">=</span><span class="s">true</span>
+<span class="py">org.gradle.parallel</span><span class="p">=</span><span class="s">true</span>
+</code></pre></div></div>
+
+<h2 id="recommended-gradle-setup-multi-module-architecture">Recommended Gradle Setup: Multi-Module Architecture</h2>
+
+<p>Adopting a multi-module project structure is a game-changer for scalability and maintainability. This approach reduces build times, promotes dependency inversion, and keeps your codebase organized. Based on industry best practices, here’s how you can structure your KMP project:</p>
+
+<ol>
+  <li>
+    <p><strong>Modularization</strong>: Break your project into feature-specific modules to isolate functionality and improve build efficiency.</p>
+  </li>
+  <li>
+    <p><strong>Convention Plugins</strong>: Centralize Gradle configurations to avoid duplication and ensure consistency.</p>
+  </li>
+  <li>
+    <p><strong>Dependency Management</strong>: Use tools like <a href="https://github.com/Hinge/project-accessors">Project Accessors</a> to streamline version control and dependency access.</p>
+  </li>
+</ol>
+
+<p>For detailed guidance, explore these resources:</p>
+
+<ul>
+  <li>
+    <p><a href="https://amzn.github.io/app-platform/module-structure/#gradle-modules">Module structure used by Square and Amazon</a>: A practical guide to organizing Gradle modules for large-scale projects.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/android/nowinandroid/blob/main/docs/ModularizationLearningJourney.md">Now In Android Modularization Learning Journey</a>: A comprehensive resource on modularizing Android apps, adaptable to KMP.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/jjohannes/gradle-project-setup-howto/tree/android">Gradle Convention Plugins How-To</a>: A step-by-step tutorial on creating and using convention plugins for Android and KMP projects.</p>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>While the KMP Gradle Plugin presents challenges due to its evolving nature, tools like <a href="https://github.com/GradleUp/compat-patrouille">La Compat-Patrouille</a> and <a href="https://github.com/Hinge/project-accessors">Project Accessors</a>, combined with performance-enhancing Gradle flags and a modular project structure, can significantly ease the transition. By leveraging these solutions and resources, you can build scalable, maintainable, and efficient KMP projects with confidence.</p>
+
+  </div>
+
+  <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+  <div>
+    <p><span class="share-box">Share:</span> <a href="http://twitter.com/share?text=Kotlin Multiplatform Gradle Tips&url=http://localhost:4000/kotlin-multiplatform-gradle-tips/" target="_blank">Twitter</a>, <a href="https://www.facebook.com/sharer.php?u=http://localhost:4000/kotlin-multiplatform-gradle-tips/" target="_blank">Facebook</a></p>
+  </div>
+
+  <!--<div class="date">
+    Written on April 21, 2025
+  </div>-->
+</article>
+
+        </div>
+      </div>
+
+      <div class="wrapper-footer">
+        <div class="container">
+          <footer class="footer">
+            
+<a href="mailto:blake+website@blakelee.net"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/blakelee" target="_blank"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/blakeoliveira" target="_blank"><i class="svg-icon linkedin"></i></a>
+
+
+
+
+
+
+
+
+
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

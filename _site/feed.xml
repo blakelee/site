@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/site/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/site/" rel="alternate" type="text/html" /><updated>2025-06-01T07:26:05-07:00</updated><id>http://localhost:4000/site/feed.xml</id><title type="html">Blake Oliveira’s Blog</title><subtitle>Thoughts and stories of a developer</subtitle><author><name>Blake Oliveira</name></author><entry><title type="html">Kotlin Multiplatform Gradle Tips</title><link href="http://localhost:4000/site/kotlin-multiplatform-gradle-tips/" rel="alternate" type="text/html" title="Kotlin Multiplatform Gradle Tips" /><published>2025-04-21T00:00:00-07:00</published><updated>2025-04-21T00:00:00-07:00</updated><id>http://localhost:4000/site/kotlin-multiplatform-gradle-tips</id><content type="html" xml:base="http://localhost:4000/site/kotlin-multiplatform-gradle-tips/"><![CDATA[<p>Kotlin Multiplatform (KMP) allows developers to share code across multiple platforms—Android, iOS, JVM, and more—while maintaining platform-specific implementations. However, configuring KMP projects with the Gradle Plugin can be challenging due to its evolving nature. Compared to the mature Android Gradle Plugin (AGP), KMP’s new DSL, sparse documentation, and incubating status require a different approach. This guide explores common hurdles and provides practical solutions to streamline your KMP workflow, optimize builds, and ensure maintainability.</p>
+
+<h2 id="challenge-1-configuring-javakotlin-versions-across-modules">Challenge 1: Configuring Java/Kotlin Versions Across Modules</h2>
+
+<p>One of the initial hurdles with KMP is setting consistent Java and Kotlin versions for each module. Unlike AGP, where this was a familiar requirement, KMP’s configuration can lead to errors like:</p>
+
+<blockquote>
+  <p>“Class has been compiled by a more recent version of the Java Environment (class file version x), this version of the Java Runtime only recognizes class file versions up to y.”</p>
+</blockquote>
+
+<p>This issue arises when the Java/Kotlin versions used to compile and run your code are misaligned. To simplify version management and avoid such errors, consider using the <a href="https://github.com/GradleUp/compat-patrouille">La Compat-Patrouille</a> library. This tool helps standardize compatibility settings across your KMP modules, reducing configuration headaches.</p>
+
+<h2 id="challenge-2-reducing-repetitive-gradle-code-in-multi-module-projects">Challenge 2: Reducing Repetitive Gradle Code in Multi-Module Projects</h2>
+
+<p>As your project grows with multiple modules, copying and pasting identical Gradle configurations becomes tedious and error-prone. A better approach is to create a convention plugin to centralize and reuse build logic. To maintain consistent dependency versions (aligned with your TOML files) and enable access to project dependencies within the build-logic folder, the <a href="https://github.com/Hinge/project-accessors">Project Accessors</a> library is invaluable. It simplifies dependency management and ensures uniformity across modules.</p>
+
+<h2 id="challenge-3-optimizing-build-performance-with-gradle-flags">Challenge 3: Optimizing Build Performance with Gradle Flags</h2>
+
+<p>To enhance the performance of your Gradle syncs and builds, you can enable several flags in your gradle.properties file. Here’s what each flag does:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ksp.incremental=true</code>: Enables incremental compilation for Kotlin Symbol Processing (KSP). This reduces build times by only reprocessing changed files, rather than the entire codebase.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">org.gradle.configuration-cache=true</code>: Activates Gradle’s configuration cache, which stores the results of the configuration phase. This speeds up subsequent builds by reusing cached configuration data, especially in large projects.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">org.gradle.caching=true</code>: Enables Gradle’s build cache, allowing tasks to reuse outputs from previous builds (local or remote). This is particularly effective for tasks like compilation or testing that produce identical outputs.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">org.gradle.parallel=true</code>: Allows Gradle to execute tasks across different modules in parallel, leveraging multi-core processors to reduce overall build time.</p>
+  </li>
+</ul>
+
+<p>Add these flags to your gradle.properties file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">ksp.incremental</span><span class="p">=</span><span class="s">true</span>
+<span class="py">org.gradle.configuration-cache</span><span class="p">=</span><span class="s">true</span>
+<span class="py">org.gradle.caching</span><span class="p">=</span><span class="s">true</span>
+<span class="py">org.gradle.parallel</span><span class="p">=</span><span class="s">true</span>
+</code></pre></div></div>
+
+<h2 id="recommended-gradle-setup-multi-module-architecture">Recommended Gradle Setup: Multi-Module Architecture</h2>
+
+<p>Adopting a multi-module project structure is a game-changer for scalability and maintainability. This approach reduces build times, promotes dependency inversion, and keeps your codebase organized. Based on industry best practices, here’s how you can structure your KMP project:</p>
+
+<ol>
+  <li>
+    <p><strong>Modularization</strong>: Break your project into feature-specific modules to isolate functionality and improve build efficiency.</p>
+  </li>
+  <li>
+    <p><strong>Convention Plugins</strong>: Centralize Gradle configurations to avoid duplication and ensure consistency.</p>
+  </li>
+  <li>
+    <p><strong>Dependency Management</strong>: Use tools like <a href="https://github.com/Hinge/project-accessors">Project Accessors</a> to streamline version control and dependency access.</p>
+  </li>
+</ol>
+
+<p>For detailed guidance, explore these resources:</p>
+
+<ul>
+  <li>
+    <p><a href="https://amzn.github.io/app-platform/module-structure/#gradle-modules">Module structure used by Square and Amazon</a>: A practical guide to organizing Gradle modules for large-scale projects.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/android/nowinandroid/blob/main/docs/ModularizationLearningJourney.md">Now In Android Modularization Learning Journey</a>: A comprehensive resource on modularizing Android apps, adaptable to KMP.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/jjohannes/gradle-project-setup-howto/tree/android">Gradle Convention Plugins How-To</a>: A step-by-step tutorial on creating and using convention plugins for Android and KMP projects.</p>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>While the KMP Gradle Plugin presents challenges due to its evolving nature, tools like <a href="https://github.com/GradleUp/compat-patrouille">La Compat-Patrouille</a> and <a href="https://github.com/Hinge/project-accessors">Project Accessors</a>, combined with performance-enhancing Gradle flags and a modular project structure, can significantly ease the transition. By leveraging these solutions and resources, you can build scalable, maintainable, and efficient KMP projects with confidence.</p>]]></content><author><name>Blake Oliveira</name></author><summary type="html"><![CDATA[Kotlin Multiplatform (KMP) allows developers to share code across multiple platforms—Android, iOS, JVM, and more—while maintaining platform-specific implementations. However, configuring KMP projects with the Gradle Plugin can be challenging due to its evolving nature. Compared to the mature Android Gradle Plugin (AGP), KMP’s new DSL, sparse documentation, and incubating status require a different approach. This guide explores common hurdles and provides practical solutions to streamline your KMP workflow, optimize builds, and ensure maintainability.]]></summary></entry><entry><title type="html">Kotlin Multiplatform</title><link href="http://localhost:4000/site/kotlin-multiplatform/" rel="alternate" type="text/html" title="Kotlin Multiplatform" /><published>2025-04-17T00:00:00-07:00</published><updated>2025-04-17T00:00:00-07:00</updated><id>http://localhost:4000/site/kotlin-multiplatform</id><content type="html" xml:base="http://localhost:4000/site/kotlin-multiplatform/"><![CDATA[<p>The main purpose of this blog is to post about the random things in Kotlin Multiplatform that I found difficult. Since Kotlin Multiplatform alongside Compose Multiplatform are actively changing there are some hiccups that appear from time to time.</p>
+
+<p>Here are some thing to note:</p>
+
+<ul>
+  <li>
+    <p>iOS dependencies with Cocoapods or Swift Package Manager (SPM) have been a huge headache</p>
+  </li>
+  <li>
+    <p>Finding the right dependency injection library (So far I’ve settled on Kotlin-Inject) since Dagger isn’t KMP</p>
+  </li>
+  <li>
+    <p>Test fixtures aren’t really a thing yet</p>
+  </li>
+  <li>
+    <p>Gradle build times</p>
+  </li>
+  <li>
+    <p>Gradle convention plugins</p>
+  </li>
+  <li>
+    <p>Running automation tests on Android and iOS</p>
+  </li>
+</ul>
+
+<p>As things pop up I intend to write a small post about what the problem was and what the solution is. With how difficult it was to create a Kotlin Multiplatform convention plugin, I may write about that first since that seems to be the least documented part that is almost immediately a bottleneck once you create a project with 10+ modules and need to make it easy to create a new module.</p>]]></content><author><name>Blake Oliveira</name></author><summary type="html"><![CDATA[The main purpose of this blog is to post about the random things in Kotlin Multiplatform that I found difficult. Since Kotlin Multiplatform alongside Compose Multiplatform are actively changing there are some hiccups that appear from time to time.]]></summary></entry></feed>

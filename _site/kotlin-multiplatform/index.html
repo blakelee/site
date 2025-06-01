@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kotlin Multiplatform – Blake Oliveira's Blog – Thoughts and stories of a developer</title>
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Kotlin Multiplatform" />
+<meta name="author" content="Blake Oliveira" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The main purpose of this blog is to post about the random things in Kotlin Multiplatform that I found difficult. Since Kotlin Multiplatform alongside Compose Multiplatform are actively changing there are some hiccups that appear from time to time." />
+<meta property="og:description" content="The main purpose of this blog is to post about the random things in Kotlin Multiplatform that I found difficult. Since Kotlin Multiplatform alongside Compose Multiplatform are actively changing there are some hiccups that appear from time to time." />
+<link rel="canonical" href="http://localhost:4000/site/kotlin-multiplatform/" />
+<meta property="og:url" content="http://localhost:4000/site/kotlin-multiplatform/" />
+<meta property="og:site_name" content="Blake Oliveira’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-04-17T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Kotlin Multiplatform" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Blake Oliveira"},"dateModified":"2025-04-17T00:00:00-07:00","datePublished":"2025-04-17T00:00:00-07:00","description":"The main purpose of this blog is to post about the random things in Kotlin Multiplatform that I found difficult. Since Kotlin Multiplatform alongside Compose Multiplatform are actively changing there are some hiccups that appear from time to time.","headline":"Kotlin Multiplatform","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/site/kotlin-multiplatform/"},"url":"http://localhost:4000/site/kotlin-multiplatform/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+
+<meta property="og:description" content="The main purpose of this blog is to post about the random things in Kotlin Multiplatform that I found difficult. Since Kotlin Multiplatform alongside Compose Multiplatform are actively changing there are some hiccups that appear from time to time.
+
+" />
+
+<meta name="author" content="Blake Oliveira's Blog" />
+
+
+<meta property="og:title" content="Kotlin Multiplatform" />
+<meta property="twitter:title" content="Kotlin Multiplatform" />
+
+
+
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/9651986"/>
+<meta property="twitter:image" content="https://avatars.githubusercontent.com/u/9651986"/>
+
+
+
+    <link rel="stylesheet" type="text/css" href="/site/assets/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Blake Oliveira's Blog - Thoughts and stories of a developer" href="/site/feed.xml" />
+    <link rel="canonical" href="http://localhost:4000/kotlin-multiplatform/" />
+
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="32x32" href="/site/images/favicon-32x32.png">
+    
+
+  </head>
+
+  <body>
+    <div id="bar"></div>
+    <div class="wrapper-container">
+      <div class="wrapper-masthead">
+        <div class="container">
+          <header class="masthead clearfix">
+            <a href="/site/" class="site-avatar"><img src="https://avatars.githubusercontent.com/u/9651986" alt="" /></a>
+
+            <div class="site-info">
+              <h1 class="site-name"><a href="/site/">Blake Oliveira's Blog</a></h1>
+              <p class="site-description">Thoughts and stories of a developer</p> 
+            </div>
+
+            <nav>
+              <a href="/site/">Home</a>
+              <a href="/site/search">Search</a>
+              <a href="/site/about">About</a>
+              <a href="/site/archive">Archive</a>
+            </nav>
+          </header>
+        </div>
+      </div>
+
+      <div class="wrapper-main">
+        <div id="main" role="main" class="container">
+          <article class="post detailed">
+  <h1>Kotlin Multiplatform</h1>
+
+  <div>
+    <p class="author_title">Blake Oliveira  ·  April 17, 2025</p>
+    
+    <div class="post-tags">
+      
+      
+    </div>
+  </div>
+
+  <div class="entry">
+    <p>The main purpose of this blog is to post about the random things in Kotlin Multiplatform that I found difficult. Since Kotlin Multiplatform alongside Compose Multiplatform are actively changing there are some hiccups that appear from time to time.</p>
+
+<p>Here are some thing to note:</p>
+
+<ul>
+  <li>
+    <p>iOS dependencies with Cocoapods or Swift Package Manager (SPM) have been a huge headache</p>
+  </li>
+  <li>
+    <p>Finding the right dependency injection library (So far I’ve settled on Kotlin-Inject) since Dagger isn’t KMP</p>
+  </li>
+  <li>
+    <p>Test fixtures aren’t really a thing yet</p>
+  </li>
+  <li>
+    <p>Gradle build times</p>
+  </li>
+  <li>
+    <p>Gradle convention plugins</p>
+  </li>
+  <li>
+    <p>Running automation tests on Android and iOS</p>
+  </li>
+</ul>
+
+<p>As things pop up I intend to write a small post about what the problem was and what the solution is. With how difficult it was to create a Kotlin Multiplatform convention plugin, I may write about that first since that seems to be the least documented part that is almost immediately a bottleneck once you create a project with 10+ modules and need to make it easy to create a new module.</p>
+
+  </div>
+
+  <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+  <div>
+    <p><span class="share-box">Share:</span> <a href="http://twitter.com/share?text=Kotlin Multiplatform&url=http://localhost:4000/kotlin-multiplatform/" target="_blank">Twitter</a>, <a href="https://www.facebook.com/sharer.php?u=http://localhost:4000/kotlin-multiplatform/" target="_blank">Facebook</a></p>
+  </div>
+
+  <!--<div class="date">
+    Written on April 17, 2025
+  </div>-->
+</article>
+
+        </div>
+      </div>
+
+      <div class="wrapper-footer">
+        <div class="container">
+          <footer class="footer">
+            
+<a href="mailto:blake+website@blakelee.net"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/blakelee" target="_blank"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/blakeoliveira" target="_blank"><i class="svg-icon linkedin"></i></a>
+
+
+
+
+
+
+
+
+
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
