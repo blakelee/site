@@ -1,5 +1,4 @@
 ---
-layout: post
 published: true
 date: 2025-04-17
 title: Kotlin Multiplatform
@@ -21,4 +20,4 @@ Here are some thing to note:
 *   Running automation tests on Android and iOS
     
 
-As things pop up I intend to write a small post about what the problem was and what the solution is. With how difficult it was to create a Kotlin Multiplatform convention plugin, I may write about that first since that seems to be the least documented part that is almost immediately a bottleneck once you create a project with 10+ modules and need to make it easy to create a new module
+As things pop up I intend to write a small post about what the problem was and what the solution is. With how difficult it was to create a Kotlin Multiplatform convention plugin, I may write about that first since that seems to be the least documented part that is almost immediately a bottleneck once you create a project with 10+ modules and need to make it easy to create a new module.
