@@ -266,7 +266,9 @@ Now for the trick. Open up `TodoDao_Impl` and look for the `createQuery` functio
 
 ``"INSERT OR ABORT INTO todo (`id`,`profile_id`,`title`) VALUES (?,?,?)"``
 
-Copy that into the the sql block that we labeled todo.
+Copy that into the the sql block that we labeled todo then replace `ABORT` with `REPLACE`
+
+The final string looks like this ``"INSERT OR REPLACE INTO todo (`id`,`profile_id`,`title`) VALUES (?,?,?)"``
 
 After this, do the same for the `Profile` table then make the schema. The order of the schema matters here -- If in Room we have our `@Database` annotation look like this
 
