@@ -1,4 +1,6 @@
-media: docs/media
+media: 
+  input: docs/media
+  output: media
 content:
   - name: posts
     label: Posts
