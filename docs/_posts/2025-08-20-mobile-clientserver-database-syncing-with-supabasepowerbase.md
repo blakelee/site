@@ -4,7 +4,7 @@ published: true
 date: 2025-08-20
 title: Syncing Room Persistence with PowerSync in Kotlin Multiplatform
 ---
-![](/media/supasync.png)
+![](/media/supabasepowersync.png)
 
 One of the most challenging problems in mobile development is keeping client state synced with the server. If you're building an app where multiple users need to see the same state, you’ve probably run into this.
 
